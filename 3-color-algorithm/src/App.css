@@ -1,6 +1,7 @@
 html, body, #root  {
   height: 99%;
   width: 99%;
+  background-color: #DEDEDE;
 }
 .container {
   display: flex;
@@ -12,18 +13,25 @@ html, body, #root  {
 .content {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 80%;
 }
 
 .graph {
-  width: 100%;
-  height: 100%;
+  width: 45%;
+  height: 90%;
+  border-radius: 10px;
+  background-color: #FFF;
+  margin: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .details {
-  width: 100%;
-  height: 100%;
+  width: 45%;
+  margin: auto;
+  height: 90%;
   position: relative;
 }
 
@@ -31,13 +39,14 @@ html, body, #root  {
   height: 20%;
   width: 96%;
   margin-left: 2%;
+  overflow: auto;
 } 
 
 .cycle-list {
   display: flex;
   justify-content: flex-end;
-  width: 50%;
-  height: 30%;
+  width: 70%;
+  height: 40%;
   margin: auto;
   margin-top: 10%;
 }
@@ -45,18 +54,27 @@ table {
   width: 100%;
   height: 100%;
   border-collapse: collapse;
+  background-color: #FFF;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 } 
- td, th {
+td, th {
   max-height: 25%;
   text-align: center;
-  padding: 0;
-  border: 1px solid black;
+  padding: 10px 30px;
+  border-bottom: 1px solid #CCC;
 }
+
+tr:last-child td, tr:last-child th {
+  border-bottom: 0;
+}
+
 
 .Next-button {
   position: absolute;
-  bottom: 5%;
-  right: 5%;
+  bottom: 0;
+  right: 0;
   height: 40px;
   width: 100px;
   border-radius: 10px;
@@ -64,10 +82,11 @@ table {
   border: 0;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   cursor: pointer;
+  font-size: 14px;
 } 
 
 .App-header {
-  font-size: 20px;
+  font-size: 24px;
   margin-left: 10px;
   margin-top: 10px;
   text-transform: capitalize;
