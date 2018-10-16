@@ -24,6 +24,7 @@ class MyLayout extends Component {
             cycleNodes: [],
             cycleGraph: { nodes: [], edges: [] },
             finished: false,
+            started: false,
         };
         this.changeColor = this.changeColor.bind(this)
         this.doCycle = this.doCycle.bind(this)
@@ -130,12 +131,16 @@ class MyLayout extends Component {
     }
 
     doCycle() {
+        this.setState({
+            started: true
+        })
         if (this.state.next == 'paint') {
             if (this.isOver()) {
                 alert('You have found a compatible flow')
                 this.setState({
                     finished: true,
-                    next: 'Finished'
+                    next: 'Finished',
+                    started: true
                 })
             } else {
                 this.changeColor()
@@ -185,7 +190,9 @@ class MyLayout extends Component {
                 cycle: this.flowFix(ed),
                 //cycleNodes: myNodes,
                 //cycleGraph: { nodes: myNodes, edges: this.flowFix(ed) },
-                next: 'updateFlow'
+                next: 'updateFlow',
+                started: true
+
             })
         }
         if (this.state.next == 'updateFlow') {
@@ -219,7 +226,9 @@ class MyLayout extends Component {
             this.setState({
 
                 flow: newFlow,
-                next: 'paint'
+                next: 'paint',
+                started: true
+
             })
         }
 
@@ -311,13 +320,36 @@ class MyLayout extends Component {
         return (
             <div class="container">
                 <div class="content">
+
                     <div class="graph">
+                        <div class="App-header">
+                            <table>
+                                <tr>
+                                    <th style={{padding: '10px'}} bgcolor='#81d4fa'>
+                                        Next State:
+                                    </th>
+                                    <th style={{padding: '10px'}} bgcolor={this.state.started ?  'white' : '#bef67a'}>
+                                        Init
+                                    </th>
+                                    <th style={{padding: '10px'}} bgcolor={!this.state.finished && this.state.next == 'paint' ? '#bef67a' : 'white'}>
+                                        Paint
+                                    </th>
+                                    <th   style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'getCycle' ? '#bef67a' : 'white'}>
+                                        Get Cycle
+                                    </th>
+                                    <th  style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'updateFlow' ? '#bef67a' : 'white'}>
+                                        Update Flow
+                                    </th>
+                                    <th style={{padding: '10px'}} bgcolor={this.state.finished ? '#bef67a' : 'white'}>
+                                        Finished
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
                         <Graph graph={this.state.graph} options={this.state.options} events={this.state.events} />
                     </div>
                     <div class="details">
-                        <div class="App-header">
-                            Next State: {this.state.next}
-                        </div>
+
 
                         <div class="cycle-list">
                             {this.state.cycle.length === 0 ? "" : <table>
@@ -339,7 +371,7 @@ class MyLayout extends Component {
 
                                     )
                                 })}
-                            </table> }
+                            </table>}
                         </div>
                         <div>
                             <Graph graph={this.state.cycleGraph} options={this.state.options} events={this.state.events} />
@@ -387,7 +419,7 @@ class MyLayout extends Component {
                                 this.state.flow.map((elem, index) => {
                                     if (this.state.graph.edges[index].minFlow <= elem && elem <= this.state.graph.edges[index].maxFlow) {
                                         this.col = '#bcffa5'
-            
+
                                     } else {
                                         this.col = 'white'
                                     }
