@@ -309,43 +309,45 @@ class MyLayout extends Component {
 
     render() {
         return (
-            <div>
-                <div class="class1" style={{ backgroundColor: 'lightgray' }}>
-                    <Graph graph={this.state.graph} options={this.state.options} events={this.state.events} />
-                </div>
-                <div class="class2" style={{ position: 'relative' }}>
-                    <div class="App-header">
-                        Next State: {this.state.next}
+            <div class="container">
+                <div class="content">
+                    <div class="graph">
+                        <Graph graph={this.state.graph} options={this.state.options} events={this.state.events} />
                     </div>
+                    <div class="details">
+                        <div class="App-header">
+                            Next State: {this.state.next}
+                        </div>
 
-                    <div class="cycle-list">
-                        <table>
-                            <tr>
-                                <th>Edge</th>
-                                <th>Direction</th>
-                                <th>Adjustment</th>
-                            </tr>
+                        <div class="cycle-list">
+                            {this.state.cycle.length === 0 ? "" : <table>
+                                <tr>
+                                    <th>Edge</th>
+                                    <th>Direction</th>
+                                    <th>Adjustment</th>
+                                </tr>
 
 
 
-                            {this.state.cycle.map((elem, index) => {
-                                return (
-                                    <tr>
-                                        <td>{elem.label}</td>
-                                        <td>{elem.direction}</td>
-                                        <td>{elem.flowFix}</td>
-                                    </tr>
+                                {this.state.cycle.map((elem, index) => {
+                                    return (
+                                        <tr>
+                                            <td>{elem.label}</td>
+                                            <td>{elem.direction}</td>
+                                            <td>{elem.flowFix}</td>
+                                        </tr>
 
-                                )
-                            })}
-                        </table>
+                                    )
+                                })}
+                            </table> }
+                        </div>
+                        <div>
+                            <Graph graph={this.state.cycleGraph} options={this.state.options} events={this.state.events} />
+
+                        </div>
+                        <button class="Next-button" disabled={this.state.finished} onClick={this.doCycle}>Next</button>
+
                     </div>
-                    <div>
-                        <Graph graph={this.state.cycleGraph} options={this.state.options} events={this.state.events} />
-
-                    </div>
-                    <button class="Next-button" disabled={this.state.finished} onClick={this.doCycle}>Next</button>
-
                 </div>
                 <div class="footer">
                     <table>
