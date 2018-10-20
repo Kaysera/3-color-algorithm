@@ -107,6 +107,19 @@ class MyLayout extends Component {
         })
     }
 
+    showCycle(cycle) {
+        var newGraph = {
+            nodes: [],
+            edges: []
+        }
+        newGraph.nodes = this.state.graph.nodes
+        newGraph.edges = this.getCycleArray(cycle)
+
+        this.setState({
+            graph: newGraph
+        })
+    }
+
     isOver() {
         var sol = true
         this.state.graph.edges.forEach((elem, index) => {
@@ -117,17 +130,6 @@ class MyLayout extends Component {
         return sol
     }
 
-    getNodesFromPath(path) {
-        var nodes = []
-        path.forEach(elem => {
-            this.state.graph.nodes.forEach(node => {
-                if (node.id == elem + 1) {
-                    nodes.push(node)
-                    alert(node.label)
-                }
-            })
-        })
-    }
 
     doCycle() {
         this.setState({
@@ -156,6 +158,7 @@ class MyLayout extends Component {
         if (this.state.next == 'getCycle') {
             var edge = this.findFirstWrongFlow()
             var edges = []
+            var labels = []
             this.state.graph.edges.forEach(element => {
                 if (element.label != edge.label) {
                     edges.push(element)
@@ -186,6 +189,11 @@ class MyLayout extends Component {
                     ed.push(edge)
                 }
             }
+            
+            ed.forEach(element => {
+                labels.push(element.label)
+            })
+            this.showCycle(labels)
 
             this.setState({
                 cycle: this.flowFix(ed),
@@ -302,6 +310,30 @@ class MyLayout extends Component {
             array.push(ed)
         }
         return array
+    }
+
+    getCycleArray(cycle) {
+        var array = []
+
+        this.state.graph.edges.forEach(element => {
+            var ed = {}
+            ed.from = element.from
+            ed.to = element.to
+            ed.minFlow = element.minFlow
+            ed.maxFlow = element.maxFlow
+            ed.label = element.label
+            ed.dashes = element.dashes
+            ed.width = element.width
+            if(cycle.includes(element.label)){
+                ed.color = { color: 'blue' }
+            }else{
+                ed.color = element.color
+            }
+            array.push(ed)
+        })
+
+        return array
+    
     }
 
 
