@@ -8,7 +8,7 @@ class MyLayout extends Component {
         super(props);
         this.state = {
             graph: this.props.graph,
-            flow: /*this.props.flow, //Init array to zero: */Array(this.props.graph.edges.length).fill(0),
+            flow: Array(this.props.graph.edges.length).fill(0),
             width: 100 / this.props.flow.length,
             events: {
                 select: function (event) {
@@ -29,7 +29,6 @@ class MyLayout extends Component {
         };
         this.changeColor = this.changeColor.bind(this)
         this.doCycle = this.doCycle.bind(this)
-        //this.findFirstWrongFlow = this.findFirstWrongFlow.bind(this)
     }
 
     getPath(graph, current, goal) {
@@ -67,7 +66,6 @@ class MyLayout extends Component {
         var array = this.state.graph.edges
         for (var i = 0; i < array.length; i++) {
             if (array[i].minFlow > this.state.flow[i] || array[i].maxFlow < this.state.flow[i]) {
-                //alert(array[i].label)
                 return array[i]
             }
         }
@@ -170,23 +168,23 @@ class MyLayout extends Component {
                 path = this.getPath(matrix, edge.to - 1, edge.from - 1)
                 var ed = this.getEdgesFromPath(path)
                 edge.direction = 'Direct'
-                ed.push(edge)
+                ed.unshift(edge)
             } else if (edge.color.color == 'green') {
                 path = this.getPath(matrix, edge.from - 1, edge.to - 1)
                 var ed = this.getEdgesFromPath(path)
                 edge.direction = 'Reverse'
-                ed.push(edge)
+                ed.unshift(edge)
             } else {
                 path = this.getPath(matrix, edge.to - 1, edge.from - 1)
                 if (path) {
                     var ed = this.getEdgesFromPath(path)
                     edge.direction = 'Direct'
-                    ed.push(edge)
+                    ed.unshift(edge)
                 } else {
                     path = this.getPath(matrix, edge.from - 1, edge.to - 1)
                     var ed = this.getEdgesFromPath(path)
                     edge.direction = 'Reverse'
-                    ed.push(edge)
+                    ed.unshift(edge)
                 }
             }
             
@@ -241,7 +239,6 @@ class MyLayout extends Component {
                         elem.flowFix = elem.maxFlow - this.state.flow[i]
                     }
                     else if (elem.direction === 'Reverse') {
-                        //alert(elem.label + ' ,Flow ' + this.state.flow[i] + ' , minFlow ' + elem.minFlow)
                         elem.flowFix = this.state.flow[i] - elem.minFlow
                     }
                     sol.push(elem)
@@ -356,10 +353,10 @@ class MyLayout extends Component {
                                     <th style={{padding: '10px'}} bgcolor={!this.state.finished && this.state.next == 'getCycle' ? '#bef67a' : 'white'}>
                                         Paint
                                     </th>
-                                    <th   style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'updateFlow' ? '#bef67a' : 'white'}>
+                                    <th style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'updateFlow' ? '#bef67a' : 'white'}>
                                         Get Cycle
                                     </th>
-                                    <th  style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'paint' ? '#bef67a' : 'white'}>
+                                    <th style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'paint' ? '#bef67a' : 'white'}>
                                         Update Flow
                                     </th>
                                     <th style={{padding: '10px'}} bgcolor={this.state.finished ? '#bef67a' : 'white'}>
