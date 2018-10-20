@@ -323,7 +323,7 @@ class MyLayout extends Component {
 
                     <div class="graph">
                         <div class="App-header">
-                            <table>
+                            <table class="no-shadow-table">
                                 <tr>
                                     <th style={{padding: '10px'}} bgcolor='#81d4fa'>
                                         Next State:
