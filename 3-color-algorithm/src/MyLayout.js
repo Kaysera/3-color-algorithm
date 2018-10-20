@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import Graph from 'react-graph-vis';
+import swal from 'sweetalert';
 
 class MyLayout extends Component {
     constructor(props) {
@@ -104,8 +105,6 @@ class MyLayout extends Component {
         this.setState({
             graph: newGraph
         })
-
-
     }
 
     isOver() {
@@ -136,7 +135,11 @@ class MyLayout extends Component {
         })
         if (this.state.next == 'paint') {
             if (this.isOver()) {
-                alert('You have found a compatible flow')
+                swal({
+                    title: "You have found a compatible flow!",
+                    text: "This is the end of the algorithm",
+                    icon: "success",
+                  });
                 this.setState({
                     finished: true,
                     next: 'Finished',
@@ -158,7 +161,6 @@ class MyLayout extends Component {
                     edges.push(element)
                 }
             })
-            //alert(edge.label)
             var path
             var matrix = this.getMatrix(edges)
             if (edge.color.color == 'black') {
@@ -185,11 +187,8 @@ class MyLayout extends Component {
                 }
             }
 
-            // var myNodes = this.getNodesFromPath(path)
             this.setState({
                 cycle: this.flowFix(ed),
-                //cycleNodes: myNodes,
-                //cycleGraph: { nodes: myNodes, edges: this.flowFix(ed) },
                 next: 'updateFlow',
                 started: true
 
@@ -202,33 +201,24 @@ class MyLayout extends Component {
                     min = elem.flowFix
                 }
             })
-            //alert(min)
             var newFlow = this.state.flow.slice(0);
 
             this.state.cycle.forEach(edge => {
                 this.state.graph.edges.forEach((elem, i) => {
                     if (edge.label === elem.label) {
-                        //alert(edge.direction)
                         if (edge.direction === 'Direct') {
-                            //elem.flowFix = elem.maxFlow - this.state.flow[i]
                             newFlow[i] = this.state.flow[i] + min
                         }
                         else if (edge.direction === 'Reverse') {
-                            //alert(elem.label + ' ,Flow ' + this.state.flow[i] + ' , minFlow ' + elem.minFlow)
-                            //elem.flowFix =  this.state.flow[i] - elem.minFlow
                             newFlow[i] = this.state.flow[i] - min
                         }
                     }
-                    //newFlow[i] = this.state.flow[i]
                 })
             })
-            //alert(newFlow)
             this.setState({
-
                 flow: newFlow,
                 next: 'paint',
                 started: true
-
             })
         }
 
@@ -326,18 +316,18 @@ class MyLayout extends Component {
                             <table class="no-shadow-table">
                                 <tr>
                                     <th style={{padding: '10px'}} bgcolor='#81d4fa'>
-                                        Next State:
+                                        Current State:
                                     </th>
                                     <th style={{padding: '10px'}} bgcolor={this.state.started ?  'white' : '#bef67a'}>
                                         Init
                                     </th>
-                                    <th style={{padding: '10px'}} bgcolor={!this.state.finished && this.state.next == 'paint' ? '#bef67a' : 'white'}>
+                                    <th style={{padding: '10px'}} bgcolor={!this.state.finished && this.state.next == 'getCycle' ? '#bef67a' : 'white'}>
                                         Paint
                                     </th>
-                                    <th   style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'getCycle' ? '#bef67a' : 'white'}>
+                                    <th   style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'updateFlow' ? '#bef67a' : 'white'}>
                                         Get Cycle
                                     </th>
-                                    <th  style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'updateFlow' ? '#bef67a' : 'white'}>
+                                    <th  style={{padding: '10px'}} bgcolor={this.state.started && !this.state.finished && this.state.next == 'paint' ? '#bef67a' : 'white'}>
                                         Update Flow
                                     </th>
                                     <th style={{padding: '10px'}} bgcolor={this.state.finished ? '#bef67a' : 'white'}>

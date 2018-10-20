@@ -6,7 +6,8 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-graph-vis": "^1.0.2",
-    "react-scripts": "2.0.4"
+    "react-scripts": "2.0.4",
+    "sweetalert": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
